@@ -4,11 +4,13 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>LinuxGSM_Web_GUI</RootNamespace>
+    <RootNamespace>LinuxGSM.Web.UI</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<NoWarn>CA1848</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Docker.DotNet" Version="3.125.15" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />    <PackageReference Include="Scalar.AspNetCore" Version="2.0.12" />
 

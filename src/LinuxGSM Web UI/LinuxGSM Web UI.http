@@ -1,6 +1,6 @@
-@LinuxGSM_Web_GUI_HostAddress = http://localhost:5173
+@LinuxGSM_Web_UI_HostAddress = http://localhost:5173
 
-GET {{LinuxGSM_Web_GUI_HostAddress}}/weatherforecast/
+GET {{LinuxGSM_Web_UI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

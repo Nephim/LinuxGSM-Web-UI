@@ -1,0 +1,275 @@
+##########################################
+# Common Settings
+##########################################
+
+# This file is the top-most EditorConfig file
+root = true
+
+# All Files
+[*]
+charset = utf-8
+indent_style = tab
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+##########################################
+# File Extension Settings
+##########################################
+
+# Visual Studio Solution Files
+[*.sln]
+indent_style = tab
+
+# Visual Studio XML Project Files
+[*.{csproj,vbproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+# XML Configuration Files
+[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct}]
+indent_size = 2
+
+# JSON Files
+[*.{json,json5,webmanifest}]
+indent_size = 2
+
+# YAML Files
+[*.{yml,yaml}]
+indent_size = 2
+
+# Markdown Files
+[*.{md,mdx}]
+trim_trailing_whitespace = false
+
+# Web Files
+[*.{htm,html,js,jsm,ts,tsx,cjs,cts,ctsx,mjs,mts,mtsx,css,sass,scss,less,pcss,svg,vue}]
+indent_size = 2
+
+# Batch Files
+[*.{cmd,bat}]
+end_of_line = crlf
+
+# Bash Files
+[*.sh]
+end_of_line = lf
+
+# Makefiles
+[Makefile]
+indent_style = tab
+
+##########################################
+# Default .NET Code Style Severities
+##########################################
+
+[*.{cs,csx,cake,vb,vbx}]
+dotnet_analyzer_diagnostic.severity = warning
+dotnet_diagnostic.IDE0290.severity = none
+
+##########################################
+# Naming Rule for Private Fields with '_'
+##########################################
+
+# Apply _ prefix for private fields
+dotnet_naming_rule.private_field_naming.symbols = private_fields
+dotnet_naming_rule.private_field_naming.style = camel_case_with_underscore_style
+dotnet_naming_rule.private_field_naming.severity = warning
+
+# Specify that private fields must have the _ prefix
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+# Define the camelCase style with the _ prefix
+dotnet_naming_style.camel_case_with_underscore_style.capitalization = camel_case
+dotnet_naming_style.camel_case_with_underscore_style.required_prefix = _
+
+##########################################
+# Language Rules
+##########################################
+
+# "this." and "Me." qualifiers
+dotnet_style_qualification_for_field = false:none
+dotnet_style_qualification_for_property = false:none
+dotnet_style_qualification_for_method = false:none
+dotnet_style_qualification_for_event = false:none
+
+# Language keywords instead of framework type names for type references
+dotnet_style_predefined_type_for_locals_parameters_members = true:warning
+dotnet_style_predefined_type_for_member_access = true:warning
+
+# Modifier preferences
+dotnet_style_require_accessibility_modifiers = always:warning
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:warning
+
+# Parentheses preferences
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:warning
+
+# Expression-level preferences
+dotnet_style_object_initializer = true:warning
+dotnet_style_collection_initializer = true:warning
+dotnet_style_explicit_tuple_names = true:warning
+dotnet_style_prefer_inferred_tuple_names = true:warning
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:warning
+dotnet_style_prefer_auto_properties = true:warning
+
+# Null-checking preferences
+dotnet_style_coalesce_expression = true:warning
+dotnet_style_null_propagation = true:warning
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
+
+# C# Style Rules
+[*.{cs,csx,cake}]
+csharp_style_var_for_built_in_types = true:warning
+csharp_style_var_when_type_is_apparent = true:warning
+csharp_style_var_elsewhere = true:warning
+
+# Expression-bodied members
+csharp_style_expression_bodied_methods = false:none
+csharp_style_expression_bodied_constructors = true:warning
+csharp_style_expression_bodied_operators = true:warning
+csharp_style_expression_bodied_properties = true:warning
+csharp_style_expression_bodied_indexers = true:warning
+csharp_style_expression_bodied_accessors = true:warning
+csharp_style_expression_bodied_lambdas = true:warning
+csharp_style_expression_bodied_local_functions = true:warning
+
+# Pattern matching preferences
+csharp_style_pattern_matching_over_is_with_cast_check = true:warning
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
+csharp_style_prefer_switch_expression = true:warning
+csharp_style_prefer_pattern_matching = true:warning
+csharp_style_prefer_not_pattern = true:warning
+
+# Expression-level preferences
+csharp_style_inlined_variable_declaration = true:warning
+csharp_prefer_simple_default_expression = true:warning
+csharp_style_pattern_local_over_anonymous_function = true:warning
+csharp_style_deconstructed_variable_declaration = true:warning
+csharp_style_prefer_index_operator = true:warning
+csharp_style_prefer_range_operator = true:warning
+csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
+
+# Null checking preferences
+csharp_style_throw_expression = true:warning
+csharp_style_conditional_delegate_call = true:warning
+
+# Code block preferences
+csharp_prefer_braces = true:warning
+csharp_prefer_simple_using_statement = true:suggestion
+dotnet_diagnostic.IDE0063.severity = suggestion
+
+# 'using' directive preferences
+csharp_using_directive_placement = inside_namespace:warning
+
+# Modifier preferences
+csharp_prefer_static_local_function = true:warning
+
+##########################################
+# Unnecessary Code Rules
+##########################################
+
+dotnet_code_quality_unused_parameters = all:warning
+dotnet_remove_unnecessary_suppression_exclusions = none:warning
+
+# C# Unnecessary code rules
+csharp_style_unused_value_expression_statement_preference = discard_variable:none
+dotnet_diagnostic.IDE0058.severity = suggestion
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+dotnet_diagnostic.IDE0059.severity = suggestion
+
+##########################################
+# Formatting Rules
+##########################################
+
+# Organize using directives
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+
+# Dotnet namespace options
+dotnet_style_namespace_match_folder = true:suggestion
+dotnet_diagnostic.IDE0130.severity = suggestion
+
+# Newline options
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# Indentation options
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = no_change
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents_when_block = false
+
+# Spacing options
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_after_comma = true
+csharp_space_before_comma = false
+
+# Wrap options
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# Namespace options
+csharp_style_namespace_declarations = file_scoped:warning
+
+##########################################
+# Naming Rules
+##########################################
+
+# Naming rules for fields, constants, methods, etc.
+dotnet_naming_symbols.public_protected_constant_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.public_protected_constant_fields_group.required_modifiers         = const
+dotnet_naming_symbols.public_protected_constant_fields_group.applicable_kinds           = field
+dotnet_naming_rule.public_protected_constant_fields_must_be_pascal_case_rule.symbols    = public_protected_constant_fields_group
+dotnet_naming_rule.public_protected_constant_fields_must_be_pascal_case_rule.style      = pascal_case_style
+dotnet_naming_rule.public_protected_constant_fields_must_be_pascal_case_rule.severity   = warning
+
+dotnet_naming_symbols.public_protected_static_readonly_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.public_protected_static_readonly_fields_group.required_modifiers         = static, readonly
+dotnet_naming_symbols.public_protected_static_readonly_fields_group.applicable_kinds           = field
+dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.symbols    = public_protected_static_readonly_fields_group
+dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.style      = pascal_case_style
+dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.severity   = warning
+
+dotnet_naming_symbols.other_public_protected_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.other_public_protected_fields_group.applicable_kinds           = field
+dotnet_naming_rule.other_public_protected_fields_disallowed_rule.symbols             = other_public_protected_fields_group
+dotnet_naming_rule.other_public_protected_fields_disallowed_rule.style               = disallowed_style
+dotnet_naming_rule.other_public_protected_fields_disallowed_rule.severity            = error
+
+# Private fields must be camelCase with _ prefix
+dotnet_naming_symbols.stylecop_private_fields_group.applicable_accessibilities = private
+dotnet_naming_symbols.stylecop_private_fields_group.applicable_kinds           = field
+dotnet_naming_rule.stylecop_private_fields_must_be_camel_case_rule.symbols     = stylecop_private_fields_group
+dotnet_naming_rule.stylecop_private_fields_must_be_camel_case_rule.style       = camel_case_with_underscore_style
+dotnet_naming_rule.stylecop_private_fields_must_be_camel_case_rule.severity    = warning
+
+# Function parameters use camelCase
+dotnet_naming_symbols.parameters_group.applicable_kinds = parameter
+dotnet_naming_rule.parameters_rule.symbols              = parameters_group
+dotnet_naming_rule.parameters_rule.style                = camel_case_style
+dotnet_naming_rule.parameters_rule.severity             = warning
+
+# Generics Type Parameters use PascalCase and are prefixed with uppercase 'T'
+dotnet_naming_symbols.type_parameter_group.applicable_kinds = type_parameter
+dotnet_naming_rule.type_parameter_rule.symbols              = type_parameter_group
+dotnet_naming_rule.type_parameter_rule.style                = prefix_type_parameters_with_t_style
+dotnet_naming_rule.type_parameter_rule.severity             = warning
+
+# Interfaces use PascalCase and are prefixed with uppercase 'I'
+dotnet_naming_symbols.interface_group.applicable_kinds = interface
+dotnet_naming_rule.interface_rule.symbols              = interface_group
+dotnet_naming_rule.interface_rule.style                = prefix_interface_with_i_style
+dotnet_naming_rule.interface_rule.severity             = warning
