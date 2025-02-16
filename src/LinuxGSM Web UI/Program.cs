@@ -1,5 +1,9 @@
-using Docker.DotNet;
+using System.Text;
+using LinuxGSM.Web.UI.Endpoints;
 using LinuxGSM.Web.UI.Extensions;
+using LinuxGSM.Web.UI.Handler;
+using LinuxGSM.Web.UI.LGSMControl;
+using LinuxGSM.Web.UI.Parser;
 using LinuxGSM.Web.UI.Service;
 using Scalar.AspNetCore;
 
@@ -11,11 +15,17 @@ builder.Logging.AddConsole();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddHttpClient();
+
 await builder.ConfigureDocker();
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<ITaskQueueService, TaskQueueService>();
 builder.Services.AddHostedService<TaskQueueHostedService>();
 builder.Services.AddSingleton<ITaskStatusService, TaskStatusService>();
+builder.Services.AddSingleton<IGameServerInfoService, GameServerInfoService>();
+builder.Services.AddSingleton<IGameServerCSVHandler, GameServerCSVHandler>();
+
+builder.Services.AddSingleton<DockerExecutor>();
 
 var app = builder.Build();
 
@@ -26,68 +36,29 @@ if (app.Environment.IsDevelopment())
 	app.MapScalarApiReference();
 }
 
-var summaries = new[]
+app.MapGroup("container").MapContainerEndpoints();
+app.MapStatusEndpoints();
+
+app.MapPost("execute/{id}", async (DockerExecutor executor, string id, HttpResponse response, CancellationToken ct) =>
 {
-	"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
-{
-	var forecast = Enumerable.Range(1, 5).Select(index =>
-		new WeatherForecast
-		(
-			DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-			Random.Shared.Next(-20, 55),
-			summaries[Random.Shared.Next(summaries.Length)]
-		))
-		.ToArray();
-	return forecast;
-})
-.WithName("GetWeatherForecast");
+	var stringBuilder = new StringBuilder();
 
-app.MapGet("container", async (IDockerClient dockerClient) =>
-{
-	var containers = await dockerClient.Containers.ListLGSMContainersAsync();
-
-	return containers;
-});
-
-app.MapPost("container/stop/{id}", (string id, IDockerClient dockerClient, ITaskStatusService taskStatusService) =>
-{
-	var jobId = taskStatusService.EnqueueTask(async token => await dockerClient.Containers.StopContainerAsync(id, new(), token));
-
-	return Results.Accepted($"/tasks/status/{jobId}", new { jobId });
-});
-
-app.MapPost("container/start/{id}", (string id, IDockerClient dockerClient, ITaskStatusService taskStatusService) =>
-{
-	var jobId = taskStatusService.EnqueueTask(async token => await dockerClient.Containers.StartContainerAsync(id, new(), token));
-
-	return Results.Accepted($"/tasks/status/{jobId}", new { jobId });
-});
-
-app.MapGet("/tasks/status/{jobId:guid}", (Guid jobId, ITaskStatusService taskStatusService) =>
-{
-	var task = taskStatusService.GetTaskStatus(jobId);
-	if (task is null)
+	await foreach (var line in executor.ExecuteCommand(id, ["./vhserver", "details"], ct))
 	{
-		return Results.NotFound(new { jobId, status = "NotFound" });
+		stringBuilder.AppendLine(line);
 	}
+	var raw = stringBuilder.ToString();
+	var parsed = DetailsParser.Parse(raw);
 
-	// For example, report the task status.
-	return Results.Ok(new
-	{
-		jobId,
-		status = task.Status.ToString(),
-		isCompleted = task.IsCompleted,
-		isFaulted = task.IsFaulted,
-		isCanceled = task.IsCanceled
-	});
+	var model = ServerInfoParser.ExtractServerInfo(parsed);
+
+	return Results.Ok(new { raw, model });
+});
+
+app.MapGet("GameServers", async (IGameServerInfoService service) =>
+{
+	return Results.Ok(await service.GetGameServerInfos());
 });
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-	public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
