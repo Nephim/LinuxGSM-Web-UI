@@ -24,6 +24,8 @@ builder.Services.AddHostedService<TaskQueueHostedService>();
 builder.Services.AddSingleton<ITaskStatusService, TaskStatusService>();
 builder.Services.AddSingleton<IGameServerInfoService, GameServerInfoService>();
 builder.Services.AddSingleton<IGameServerCSVHandler, GameServerCSVHandler>();
+builder.Services.AddSingleton<LGSMDockerController>();
+builder.Services.AddHostedService<LGSMContainerService>();
 
 builder.Services.AddSingleton<DockerExecutor>();
 
@@ -44,9 +46,10 @@ app.MapPost("execute/{id}", async (DockerExecutor executor, string id, HttpRespo
 
 	var stringBuilder = new StringBuilder();
 
-	await foreach (var line in executor.ExecuteCommand(id, ["./vhserver", "details"], ct))
+	await foreach (var line in executor.ExecuteCommand(id, ["bash", "-c", "for i in {1..5};do echo $(date);sleep 1;done"], ct))
 	{
 		stringBuilder.AppendLine(line);
+		Console.WriteLine(line);
 	}
 	var raw = stringBuilder.ToString();
 	var parsed = DetailsParser.Parse(raw);
